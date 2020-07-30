@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="ginput" class="form-control" type="text">
+                    <button id="genbtn" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="userinput" class="form-control" type="text" >
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                                <div class="button" id="7"> 7</div>
+                                <div class="button" id="8"> 8</div>
+                                <div class="button" id="9"> 9</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" id="4"> 4</div>
+                                <div class="button" id="5"> 5</div>
+                                <div class="button" id="6"> 6</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" id="1"> 1</div>
+                                <div class="button" id="2"> 2</div>
+                                <div class="button" id="3"> 3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" id="<"> < </div>
+                                <div class="button" id="0"> 0</div>
+                                <div class="button" id="c"> C</div>
+                            </div>
+                            <div>
+                                <button type="submit" class="submit-btn" id="submitbutton">Submit</button>
+                                <p class="action-left">3 try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section" id="notification">
+            <p class="notify1" id="cross">❌ Pin Didn't Match, Please try again</p>
+            <p class="notify2" id="tick">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+    <script>
+        var pingenerator;
+        const generateBtn = document.getElementById("genbtn");
+        generateBtn.addEventListener("click", function(){
+            const temp = Math.floor(1000 + Math.random() * 9000);
+            var genpin = document.getElementById("ginput").value = temp;
+            pingenerator = genpin       
+        });       
+        function numberadd(firstno,secondno){
+            var num1 = secondno.toString();
+            var num2 = firstno.toString();
+            var result = num1 + num2;
+            return result
+        }
+        var userinputs;
+        var secondnumber = ""
+        const push_btn = document.querySelectorAll(".button");
+        for (let i=0;i < push_btn.length; i++){
+            push_btn[i].addEventListener("click", function(){
+                var input_number = this.id;
+                if(input_number=="c"){
+                    var clear = document.getElementById("userinput").value="";
+                    userinputs = clear;
+                    secondnumber = clear;
+                }
+                else if(input_number == "<"){
+                    operation = userinputs;
+                    operation = operation / 10;
+                    userinputs = parseInt(operation);
+                    if(userinputs == 0){
+                        const clearlastdigit = document.getElementById("userinput").value ="";
+                        secondnumber = clearlastdigit;
+                    }
+                    else{
+                        const clearlastdigit = document.getElementById("userinput").value = userinputs;
+                        secondnumber = clearlastdigit;
+                    }
+                }
+                else{
+                    input_number = numberadd(input_number,secondnumber);
+                    var input = document.getElementById("userinput").value = input_number;
+                    secondnumber = input;
+                    userinputs = input;
+                }
+            });
+        }
+        const submitBtn = document.getElementById("submitbutton");
+        submitBtn.addEventListener("click", function(){
+            var str1 = userinputs;
+            var str2 = pingenerator;
+            var ans = str1.localeCompare(str2);
+            if(ans==-1 || ans==1){
+                const notifysection = document.getElementById("notification");
+                notifysection.style.display = "block";
+                const notifycross = document.getElementById("cross");
+                notifycross.style.display = "block";
+                const notifytik = document.getElementById("tick");
+                notifytik.style.display = "none";
+            }
+            if(ans==0){
+                const notifysection = document.getElementById("notification");
+                notifysection.style.display = "block";
+                const notifycross = document.getElementById("cross");
+                notifycross.style.display = "none";
+                const notifytik = document.getElementById("tick");
+                notifytik.style.display = "block";
+            }       
+        });
+        
+
+    </script>
+</body>
+</html>
